@@ -1,4 +1,4 @@
-laeaname: "batch"
+name: "batch"
 version: "0.1.0"
 repository: github.com/y4ney/trivy-plugin-batch
 maintainer: Yaney
