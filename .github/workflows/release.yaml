@@ -17,6 +17,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            trivy-kubectl.tar.gz
+            trivy-batch.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
