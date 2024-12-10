@@ -4,6 +4,14 @@
 
 ## 安装
 
+使用前，需要先安装 report 插件
+
+```bash
+trivy plugin install github.com/miao2sec/trivy-plugin-report
+```
+
+然后再安装本插件
+
 ```bash
 trivy plugin install github.com/y4ney/trivy-plugin-batch
 ```
