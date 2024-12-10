@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Usage
+function usage() {
+  cat << EOS >&2
+使用方法: trivy batch [-h,--help] trivy batch [-h,--help] <txt_file>
+ 一个可以批量扫描 TXT 文件中的镜像文件的 Trivy 插件。
+
+选项:
+  -h, --help    显示使用手册.
+
+示例:
+  # 从 TXT 文件中获取镜像文件，进行扫描
+  trivy batch <txt_file>
+EOS
+  exit
+}
+
+function read_images_from_txt() {
+  local txt_file="$1"
+  images_array=()
+
+  # 判断文件是否存在
+  if [[ ! -f "$txt_file" ]]; then
+    echo "文件不存在: $txt_file"
+    return 1
+  fi
+
+  # 按行读取文件
+  while IFS= read -r line || [[ -n "$line" ]]
+  do
+    # 忽略空行以及以 # 开头的航
+    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
+      # 将镜像名加入数组
+      images_array+=("$line")
+    fi
+  done < "$txt_file"
+}
+
+function create_dir(){
+  mkdir excel
+  mkdir markdown
+}
+
+function scan() {
+  local image="$1"
+  local base_name="${image%.tar}"
+  local excel_file="excel/${base_name}.xlsx"
+  local markdown_file="markdown/${base_name}.md"
+  trivy image -d --skip-db-update --skip-java-db-update --timeout 20m --scanners vuln --format json --input "$image" | trivy report --markdown-file "$markdown_file" --brief --excel-file "$excel_file" --beautify
+}
+
+# 若没有标志或传入了 --help 标志，我们将显示使用手册
+if [[ ($# -eq 0) || ($1 == "--help") || ($1 == "-h") ]]; then
+  usage
+fi
+
+# 调用函数
+read_images_from_txt "$1"
+
+# 创建目录
+create_dir
+
+# 在函数外部输出数组内容
+for image in "${images_array[@]}"; do
+  scan "$image"
+done

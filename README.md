@@ -1,21 +1,33 @@
-# trivy-plugin-template
-Template for Trivy plugins
+# trivy-plugin-batch
 
-**NOTE: Replace <org_name>, <repository_name> and <plugin_name> in go.mod, goreleaser.yaml and plugin.yaml with the appropriate values.**
+一个可以批量扫描 TXT 文件中的镜像文件的 [Trivy](https://github.com/aquasecurity/trivy) 插件。
 
-## Installation
-```shell
-trivy plugin install github.com/<org_name>/<repository_name>
+## 安装
+
+```bash
+trivy plugin install github.com/y4ney/trivy-plugin-batch
 ```
 
-## Usage
+## 帮助页面
 
-```shell
-trivy image --format json --output plugin=<plugin_name> [--output-plugin-arg plugin_flags] <image_name>
+```bash
+trivy batch --help
+使用方法: trivy batch [-h,--help] <txt_file>
+ 一个可以批量扫描 TXT 文件中的镜像文件的 Trivy 插件。
+
+选项:
+  -h, --help    显示使用手册.
+
+示例:
+  # 从 TXT 文件中获取镜像文件，进行扫描
+  trivy batch <txt_file>
 ```
 
-OR
+## 使用方法
 
-```shell
-trivy image -f json <image_name> | trivy <plugin_name> [plugin_flags]
+直接指定一个 txt 文件即可
+
+```bash
+# 扫描 images.txt 中的镜像文件
+trivy batch images.txt
 ```
