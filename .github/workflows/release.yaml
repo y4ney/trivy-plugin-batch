@@ -14,7 +14,7 @@ jobs:
       - name: Compress
         run: tar -zcvf trivy-batch.tar.gz trivy-batch LICENSE plugin.yaml README.md
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             trivy-batch.tar.gz
